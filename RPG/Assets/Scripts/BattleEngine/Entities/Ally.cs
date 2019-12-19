@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ally : MonoBehaviour
+namespace BattleEngine.Entities
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Ally : Character
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public override void DecideNextAction()
+        {
+           
+        }
     }
 }
