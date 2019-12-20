@@ -10,6 +10,7 @@ namespace BattleEngine
     {
         #region Enums
         public enum ActionState { Acting, CoolDown };
+        public enum ActionType { Attack, StatusEffect, Buff, Debuff, Heal, Interrupt, Interruptable};
         #endregion
 
         #region Private/Protected Variables
@@ -20,6 +21,8 @@ namespace BattleEngine
         protected Action<List<Character>> actionEffect;
         protected List<Character> targets;
         protected ActionState state;
+        protected List<ActionType> ActionTypes;
+        protected bool hasBeenInterrupted;
         #endregion
         public BattleAction(Character author, Action<List<Character>> actionEffect,List<Character> targets)
         {
@@ -27,11 +30,27 @@ namespace BattleEngine
             this.actionEffect = actionEffect;
             this.targets = targets;
             this.state = ActionState.Acting;
+            hasBeenInterrupted = false;
         }
 
+        public List<ActionType> GetActionTypes()
+        {
+            return ActionTypes;
+        }
+
+        public Character getAuthor()
+        {
+            return author;
+        }
+
+        public List<Character> getTargets()
+        {
+            return targets;
+        }
         public void Act()
         {
-            actionEffect(targets);
+            if(!hasBeenInterrupted)
+                actionEffect(targets);
         }
 
         public void TimeLineStep()
@@ -43,6 +62,7 @@ namespace BattleEngine
         {
             state = ActionState.CoolDown;
             startTimeStamp = Time.time;
+            hasBeenInterrupted = true;
             author.Interrupt();
         }
 
