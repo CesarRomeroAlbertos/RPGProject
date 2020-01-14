@@ -7,6 +7,7 @@ namespace BattleEngine
     public class TimeLine : MonoBehaviour
     {
         #region Private/Protected variables
+        private static TimeLine instance;
         private TimeLineState state;
         private List<BattleAction> actingActions;
         #endregion
@@ -15,16 +16,28 @@ namespace BattleEngine
         public enum TimeLineState { Active, Paused }
         #endregion
 
+        //Private constructor so only this class can instantiate itself
+        private TimeLine() { }
+
+        //Method to get the instance of the timeline
+        public static TimeLine getInstance()
+        {
+            if (instance == null)
+                instance = new TimeLine();
+            return instance;
+        }
+
         // Start is called before the first frame update
         void Start()
         {
-
+            state = TimeLineState.Paused;
         }
 
         // Update is called once per frame
         void Update()
         {
-
+            if(state == TimeLineState.Active)
+                CheckConflicts();
         }
 
         private void LateUpdate()
@@ -34,6 +47,9 @@ namespace BattleEngine
             actingActions.Clear();
         }
 
+        /// <summary>
+        /// This method checks the actions happening at the same time and resolves possible conflicts between them, chaining possible interruptions and executing them
+        /// </summary>
         private void CheckConflicts()
         {
             List<int> indexToRemove = new List<int>();

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace BattleEngine
 {
-    public class BattleAction
+    public class BattleAction:MonoBehaviour
     {
         #region Enums
         public enum ActionState { Acting, CoolDown };
@@ -14,6 +14,7 @@ namespace BattleEngine
         #endregion
 
         #region Private/Protected Variables
+        private TimeLine timeLine;
         protected float startTimeStamp;
         protected float actionTime;
         protected float coolDownTime;
@@ -31,6 +32,7 @@ namespace BattleEngine
             this.targets = targets;
             this.state = ActionState.Acting;
             hasBeenInterrupted = false;
+            timeLine = TimeLine.getInstance();
         }
 
         public List<ActionType> GetActionTypes()
